@@ -6,9 +6,9 @@
 # These will be substituted in JMX test script
 # See also: http://stackoverflow.com/questions/14317715/jmeter-changing-user-defined-variables-from-command-line
 export THREADS="300"
-export TARGET_HOST="kic-inetr-svc.lgerobotctrl.com"
+export TARGET_HOST=""
 export TARGET_PORT=""
-export TARGET_PATH="/robot/b2b/v1.1/device/testDevice1/snapshot"
+export TARGET_PATH=""
 # export TARGET_KEYWORD="KEYWORD"
 export TARGET_PROTOCOL="https"
 export TARGET_METHOD="PUT"
