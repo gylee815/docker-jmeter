@@ -5,13 +5,23 @@
 # Example for using User Defined Variables with JMeter. You can customize these variables
 # These will be substituted in JMX test script
 # See also: http://stackoverflow.com/questions/14317715/jmeter-changing-user-defined-variables-from-command-line
-export THREADS="300"
-export TARGET_HOST=""
-export TARGET_PORT=""
-export TARGET_PATH=""
+
+export TARGET_HOST="api.example.com"
+export TARGET_PORT="443"
+export AUTH_TOKEN="AUTHORIZATION_TOKEN"
+export API_KEY="API_KEY"
+export TARGET_PATH="/some/path/here"
+
 # export TARGET_KEYWORD="KEYWORD"
 export TARGET_PROTOCOL="https"
-export TARGET_METHOD="PUT"
+
+## Delivery Method = POST, Battery Method = POST
+export TARGET_METHOD="POST"
+
+export THREADS="500"
+export RAMP_UP_PERIOD=1
+export THREADS_DURATION=1800
+export THREADS_DELAY=1000
 
 T_DIR=tests/trivial
 
@@ -24,8 +34,9 @@ mkdir -p ${R_DIR}
 
 # docker run with jmeter args
 ./run.sh -Dlog_level.jmeter=DEBUG \
-	-JTARGET_HOST=${TARGET_HOST} -JTARGET_PORT=${TARGET_PORT} -JTHREADS=${THREADS}\
+	-JTARGET_HOST=${TARGET_HOST} -JAUTH_TOKEN=${AUTH_TOKEN} -JTARGET_PORT=${TARGET_PORT} -JAPI_KEY=${API_KEY}\
 	-JTARGET_PATH=${TARGET_PATH} -JTARGET_PROTOCOL=${TARGET_PROTOCOL} -JTARGET_METHOD=${TARGET_METHOD}\
+	-JTHREADS=${THREADS} -JRAMP_UP_PERIOD=${RAMP_UP_PERIOD} -JTHREADS_DURATION=${THREADS_DURATION} -JTHREADS_DELAY=${THREADS_DELAY}\
 	-n -t ${T_DIR}/test-plan.jmx -l ${T_DIR}/test-plan.jtl -j ${T_DIR}/jmeter.log \
 	-e -o ${R_DIR}
 

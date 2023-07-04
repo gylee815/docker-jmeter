@@ -20,9 +20,9 @@
           <stringProp name="LoopController.loops">-1</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${THREADS}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${RAMP_UP_PERIOD}</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
-        <stringProp name="ThreadGroup.duration">300</stringProp>
+        <stringProp name="ThreadGroup.duration">${THREADS_DURATION}</stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
@@ -49,6 +49,14 @@
               <stringProp name="Header.name">Content-Type</stringProp>
               <stringProp name="Header.value">application/json</stringProp>
             </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">x-api-key</stringProp>
+              <stringProp name="Header.value">${API_KEY}</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">x-auth-token</stringProp>
+              <stringProp name="Header.value">${AUTH_TOKEN}</stringProp>
+            </elementProp>
           </collectionProp>
         </HeaderManager>
         <hashTree/>
@@ -58,7 +66,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;snapshot&quot;:{&quot;state&quot;:{&quot;reported&quot;:{&quot;static&quot;:{&quot;deviceType&quot;:&quot;8004&quot;,&quot;serviceCode&quot;:&quot;CHN000054&quot;,&quot;countryCode&quot;:&quot;KR&quot;},&quot;meta&quot;:{&quot;messageId&quot;:&quot;_m8lE9gzRZGRHSzhKr5M-Q&quot;,&quot;deviceTimestamp&quot;:&quot;1602056380920&quot;},&quot;deviceState&quot;:{&quot;operationState&quot;:{&quot;sub&quot;:&quot;&quot;,&quot;main&quot;:&quot;STANDBY&quot;},&quot;operationDetails&quot;:{&quot;result&quot;:&quot;EMERGENCY&quot;,&quot;moveDistance&quot;:0,&quot;operationDuration&quot;:3,&quot;description&quot;:&quot;ONDEMAND&quot;,&quot;progressRate&quot;:100,&quot;poiCode&quot;:&quot;10296&quot;,&quot;group&quot;:&quot;20201007163940&quot;}}}},&quot;timestamp&quot;:1602056387997}}</stringProp>
+                <stringProp name="Argument.value"></stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -80,7 +88,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;snapshot&quot;:{&quot;state&quot;:{&quot;reported&quot;:{&quot;static&quot;:{&quot;deviceType&quot;:&quot;8004&quot;,&quot;serviceCode&quot;:&quot;CHN000054&quot;,&quot;countryCode&quot;:&quot;KR&quot;},&quot;meta&quot;:{&quot;messageId&quot;:&quot;_m8lE9gzRZGRHSzhKr5M-Q&quot;,&quot;deviceTimestamp&quot;:&quot;1602056380920&quot;},&quot;deviceState&quot;:{&quot;operationState&quot;:{&quot;sub&quot;:&quot;&quot;,&quot;main&quot;:&quot;STANDBY&quot;},&quot;operationDetails&quot;:{&quot;result&quot;:&quot;EMERGENCY&quot;,&quot;moveDistance&quot;:0,&quot;operationDuration&quot;:3,&quot;description&quot;:&quot;ONDEMAND&quot;,&quot;progressRate&quot;:100,&quot;poiCode&quot;:&quot;10296&quot;,&quot;group&quot;:&quot;20201007163940&quot;}}}},&quot;timestamp&quot;:1602056387997}}</stringProp>
+                <stringProp name="Argument.value">{&quot;payload&quot;:{&quot;data&quot;: &quot;SOME_DATA&quot;}}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -100,42 +108,53 @@
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
         </HTTPSamplerProxy>
-        <!--  ADD TIMER HERE -->
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;payload&quot;:{&quot;data&quot;: &quot;SOME_DATA&quot;}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${TARGET_HOST}</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol">${TARGET_PROTOCOL}</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${TARGET_PATH}</stringProp>
+          <stringProp name="HTTPSampler.method">${TARGET_METHOD}</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <!--  ADD Flow Control Action and TIMER HERE -->
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Flow Control Action" enabled="true">
+          <intProp name="ActionProcessor.action">1</intProp>
+          <intProp name="ActionProcessor.target">0</intProp>
+          <stringProp name="ActionProcessor.duration">0</stringProp>
+        </TestAction>
         <hashTree>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-            <stringProp name="TestPlan.comments">every second</stringProp>
-            <stringProp name="ConstantTimer.delay">10000</stringProp>
+            <stringProp name="ConstantTimer.delay">${THREADS_DELAY}</stringProp>
           </ConstantTimer>
           <hashTree/>
-          <!--<ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Test-Keyword" enabled="true">-->
-          <!--  <collectionProp name="Asserion.test_strings">-->
-          <!--    <stringProp name="-1283727093"></stringProp>-->
-          <!--  </collectionProp>-->
-          <!--  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>-->
-          <!--  <boolProp name="Assertion.assume_success">false</boolProp>-->
-          <!--  <intProp name="Assertion.test_type">16</intProp>-->
-          <!--  <stringProp name="TestPlan.comments">Test if HTML page contains keyword string</stringProp>-->
-          <!--</ResponseAssertion>-->
-          <!--<hashTree/>-->
         </hashTree>
-        <!--<TestAction guiclass="TestActionGui" testclass="TestAction" testname="ThinkTime1s" enabled="true">-->
-        <!--  <intProp name="ActionProcessor.action">1</intProp>-->
-        <!--  <intProp name="ActionProcessor.target">0</intProp>-->
-        <!--  <stringProp name="ActionProcessor.duration">0</stringProp>-->
-        <!--</TestAction>-->
-        <!--<hashTree>-->
-        <!--  <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="URT" enabled="true">-->
-        <!--    <stringProp name="ConstantTimer.delay">1000</stringProp>-->
-        <!--    <stringProp name="RandomTimer.range">100.0</stringProp>-->
-        <!--  </UniformRandomTimer>-->
-        <!--  <hashTree/>-->
-        <!--</hashTree>-->
+        </hashTree>
         <!-- Set Argument Here which was passed when run jmeter => ${__P([ARG_NAME],[DEFAULT_VAR])} -->
         <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments">
             <elementProp name="TARGET_HOST" elementType="Argument">
               <stringProp name="Argument.name">TARGET_HOST</stringProp>
-              <stringProp name="Argument.value">${__P(TARGET_HOST,kic-inetr-svc.lgerobotctrl.com)}</stringProp>
+              <stringProp name="Argument.value">${__P(TARGET_HOST,api.example.com)}</stringProp>
               <stringProp name="Argument.desc">target server domain/IP for testing</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
@@ -157,18 +176,48 @@
               <stringProp name="Argument.desc">target method on TARGET_HOST for testing</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="AUTH_TOKEN" elementType="Argument">
+              <stringProp name="Argument.name">API_KEY</stringProp>
+              <stringProp name="Argument.value">${__P(API_KEY,None)}</stringProp>
+              <stringProp name="Argument.desc">API Key for service server</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+              <elementProp name="AUTH_TOKEN" elementType="Argument">
+              <stringProp name="Argument.name">AUTH_TOKEN</stringProp>
+              <stringProp name="Argument.value">${__P(AUTH_TOKEN,None)}</stringProp>
+              <stringProp name="Argument.desc">authentication token for service server</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
             <elementProp name="TARGET_PATH" elementType="Argument">
               <stringProp name="Argument.name">TARGET_PATH</stringProp>
-              <stringProp name="Argument.value">${__P(TARGET_PATH,/robot/b2b/v1.1/device/testDevice1/snapshot)}</stringProp>
+              <stringProp name="Argument.value">${__P(TARGET_PATH,/some/path/here)}</stringProp>
               <stringProp name="Argument.desc">target path on target server</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="THREADS" elementType="Argument">
               <stringProp name="Argument.name">THREADS</stringProp>
-              <stringProp name="Argument.value">${__P(THREADS,100)}</stringProp>
+              <stringProp name="Argument.value">${__P(THREADS,150)}</stringProp>
               <stringProp name="Argument.desc">Number of concurrent threads</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="RAMP_UP_PERIOD" elementType="Argument">
+            <stringProp name="Argument.name">RAMP_UP_PERIOD</stringProp>
+            <stringProp name="Argument.value">${__P(RAMP_UP_PERIOD,3)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">Ramp up period for each Thread</stringProp>
+          </elementProp>
+          <elementProp name="THREADS_DURATION" elementType="Argument">
+            <stringProp name="Argument.name">THREADS_DURATION</stringProp>
+            <stringProp name="Argument.value">${__P(THREADS_DURATION,1800)}</stringProp>
+            <stringProp name="Argument.desc">Duration of each Thread</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="THREADS_DELAY" elementType="Argument">
+            <stringProp name="Argument.name">THREADS_DELAY</stringProp>
+            <stringProp name="Argument.value">${__P(THREADS_DELAY,3000)}</stringProp>
+            <stringProp name="Argument.desc">Delay of each Thread(Constant Timer) - Pause during delay time</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           </collectionProp>
           <stringProp name="TestPlan.comments">Example using UDV for symbolic names test target and response to test</stringProp>
         </Arguments>

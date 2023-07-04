@@ -3,7 +3,8 @@
 # Run JMeter Docker image with options
 
 NAME="docker-jmeter"
-IMAGE="gylee/jmeter:5.3"
+IMAGE="dusqor815/jmeter:5.5"
+# IMAGE="883163820320.dkr.ecr.ap-northeast-2.amazonaws.com/gylee/alpine-jmeter:5.3"
 
 # stop and rm exist docker-jmeter
 sudo docker stop ${NAME} > /dev/null 2>&1

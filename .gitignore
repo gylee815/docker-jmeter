@@ -3,3 +3,5 @@ docker-remove-all.sh
 **/report/
 **/*.jtl
 **/*.log
+test-plan-log.csv
+test-plan-summary
